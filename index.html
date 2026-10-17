@@ -95,7 +95,7 @@ button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;backgroun
 #splash.out{opacity:0;transform:scale(1.2);pointer-events:none}
 #splash>*{position:relative;z-index:1;text-align:center}
 #splash h1{font-size:clamp(26px,6vw,48px);margin:0;letter-spacing:-1px;animation:pop 1s cubic-bezier(.2,1.4,.4,1) .2s both}
-#splash p{margin:0;opacity:.6;animation:pop 1s .5s both}#splash .row{animation:pop 1s .7s both}
+#splash p{margin:0;opacity:.6;animation:pop 1s .5s both}
 #splash .logo{animation:pop 1s cubic-bezier(.2,1.4,.4,1) both,bob 4s 1s ease-in-out infinite}
 @keyframes pop{from{opacity:0;transform:translateY(30px) scale(.8)}}
 #dock,#closed{position:fixed;z-index:30;display:none}
@@ -132,7 +132,7 @@ body{padding:16px;box-sizing:border-box}
 <symbol id="play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
 </defs></svg>
 <div id="blobs"><i></i><i></i><i></i></div>
-<div id="splash"><div class="logo">T</div><h1 id="sh1">Welcome to Tasla Quick Browser</h1><p>Fast. Free. Smart.</p><div class="row" id="nm" style="display:none"><input class="pin" id="nin" placeholder="Your name" maxlength="24"><button class="ok" id="nok">Start</button></div></div>
+<div id="splash"><div class="logo">T</div><h1 id="sh1">Welcome to Tasla Quick Browser</h1><p>Fast. Free. Smart.</p></div>
 <div id="win" class="g">
  <div id="tabs" class="g"><div id="lights"><i class="r" id="lr"></i><i class="y" id="ly"></i><i class="gr" id="lg"></i></div><div id="tabrow"></div><button id="newtab"><svg class="i"><use href="#plus"/></svg></button></div>
  <div id="pg"></div><div id="view"></div>
@@ -162,9 +162,12 @@ const vid=s=>{const m=String(s).match(/(?:[?&]v=|youtu\.be\/|\/embed\/|\/shorts\
 function toast(t){const e=$("#toast");e.textContent=t;e.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display="none",2200)}
 function applyBg(){const d=S.g("bg","");document.body.style.backgroundImage=d?`url(${d})`:"";document.body.classList.toggle("hasbg",!!d)}
 applyBg();$("#aiq").style.display=aiHide?"none":"";
+
 function endSplash(){$("#splash").classList.add("out");setTimeout(()=>$("#splash").remove(),950);render()}
-if(name){$("#sh1").textContent="Welcome, "+name;setTimeout(endSplash,2600)}
-else{$("#nm").style.display="flex";$("#nok").onclick=()=>{name=$("#nin").value.trim()||"Friend";S.s("name",name);$("#nm").style.display="none";$("#sh1").textContent="Welcome, "+name;setTimeout(endSplash,1800)}}
+if(!name){name="Friend";S.s("name",name);}
+$("#sh1").textContent="Welcome, "+name;
+setTimeout(endSplash,1200);
+
 function newTab(u){tabs.push({id:nid++,url:"",h:[],i:-1,t:"New tab"});cur=tabs.length-1;u?go(u):render()}
 function norm(r){r=r.trim();if(vid(r)&&/youtu/.test(r))return"https://www.youtube.com/watch?v="+vid(r);if(/^(https?:\/\/)?(www\.|m\.)?youtube\.com\/?$/i.test(r)\vert{}\vert{}/^youtube$/i.test(r))return YT;if(/^https?:\/\//i.test(r))return r;if(/^[^\s]+\.[a-z]{2,}(\/\S*)?$/i.test(r))return"https://"+r;return"https://en.wikipedia.org/w/index.php?search="+encodeURIComponent(r)}
 function go(r){const t=tabs[cur],u=r.startsWith("tasla:")?r:norm(r);t.h=t.h.slice(0,t.i+1);t.h.push(u);t.i++;t.url=u;t.t=host(u)||"Tab";render();const p=$("#pg");p.classList.remove("go");void p.offsetWidth;p.classList.add("go")}
