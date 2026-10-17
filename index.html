@@ -64,7 +64,13 @@ button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;backgroun
 .lnk{display:block;margin:12px auto 0;font-size:12px;opacity:.6;text-decoration:underline}
 .yt{flex:1;display:flex;flex-direction:column;min-height:0;gap:8px}
 .yt .row{margin:0 8px}.yt small{margin:0 18px;opacity:.6;font-size:12px}
-.yh{margin:auto;text-align:center;opacity:.7;padding:20px}.yp iframe{width:calc(100% - 16px);margin:0 8px;aspect-ratio:16/9;border:0;border-radius:22px;background:#000;display:block}.yr{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;padding:0 8px 8px;align-content:start}.yc{border-radius:20px;overflow:hidden;text-align:left;font-size:13px;line-height:1.35}.yc img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:rgba(0,0,0,.12)}.yc div{padding:9px 12px}.yr .yh{grid-column:1/-1}
+.yh{margin:auto;text-align:center;opacity:.7;padding:20px}
+.yp iframe{width:calc(100% - 16px);margin:0 8px;aspect-ratio:16/9;border:0;border-radius:22px;background:#000;display:block}
+.yr{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:0 8px 8px;align-content:start}
+.yc{background:var(--card);border:1px solid var(--edge);border-radius:20px;overflow:hidden;text-align:left;font-size:13px;line-height:1.35;display:flex;flex-direction:column}
+.yc img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:rgba(0,0,0,.12);flex-shrink:0}
+.yc div{padding:10px 12px}
+.yr .yh{grid-column:1/-1}
 .ov{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(10,30,80,.25);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s}
 .ov.on{opacity:1;pointer-events:auto}
 #sc{width:min(520px,100%);max-height:82%;overflow:auto;border-radius:30px 30px 0 0;padding:18px;transform:translateY(60px) scale(.96);transition:transform .45s cubic-bezier(.2,1.3,.4,1)}
@@ -75,7 +81,7 @@ button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;backgroun
 .mn button:hover{background:var(--acc);color:#fff}
 .mn .i{color:var(--acc)}.mn button:hover .i{color:#fff}
 .fr{justify-content:space-between;margin-bottom:8px}
-.ai .tb{display:flex;gap:6px;margin-bottom:10px}
+.ai .tb{display:flex;gap:6px;margin-bottom:10px;align-items:center}
 .ai .tb button{padding:9px 14px;border-radius:16px;background:var(--card);font-size:13px;display:flex;gap:6px;align-items:center}
 .ai .tb .on{background:var(--acc);color:#fff}
 #msgs{height:42vh;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
@@ -160,7 +166,7 @@ function endSplash(){$("#splash").classList.add("out");setTimeout(()=>$("#splash
 if(name){$("#sh1").textContent="Welcome, "+name;setTimeout(endSplash,2600)}
 else{$("#nm").style.display="flex";$("#nok").onclick=()=>{name=$("#nin").value.trim()||"Friend";S.s("name",name);$("#nm").style.display="none";$("#sh1").textContent="Welcome, "+name;setTimeout(endSplash,1800)}}
 function newTab(u){tabs.push({id:nid++,url:"",h:[],i:-1,t:"New tab"});cur=tabs.length-1;u?go(u):render()}
-function norm(r){r=r.trim();if(vid(r)&&/youtu/.test(r))return"https://www.youtube.com/watch?v="+vid(r);if(/^(https?:\/\/)?(www\.|m\.)?youtube\.com\/?$/i.test(r)||/^youtube$/i.test(r))return YT;if(/^https?:\/\//i.test(r))return r;if(/^[^\s]+\.[a-z]{2,}(\/\S*)?$/i.test(r))return"https://"+r;return"https://en.wikipedia.org/w/index.php?search="+encodeURIComponent(r)}
+function norm(r){r=r.trim();if(vid(r)&&/youtu/.test(r))return"https://www.youtube.com/watch?v="+vid(r);if(/^(https?:\/\/)?(www\.|m\.)?youtube\.com\/?$/i.test(r)\vert{}\vert{}/^youtube$/i.test(r))return YT;if(/^https?:\/\//i.test(r))return r;if(/^[^\s]+\.[a-z]{2,}(\/\S*)?$/i.test(r))return"https://"+r;return"https://en.wikipedia.org/w/index.php?search="+encodeURIComponent(r)}
 function go(r){const t=tabs[cur],u=r.startsWith("tasla:")?r:norm(r);t.h=t.h.slice(0,t.i+1);t.h.push(u);t.i++;t.url=u;t.t=host(u)||"Tab";render();const p=$("#pg");p.classList.remove("go");void p.offsetWidth;p.classList.add("go")}
 function step(d){const t=tabs[cur],n=t.i+d;if(n<-1||n>=t.h.length)return;t.i=n;t.url=n<0?"":t.h[n];t.t=t.url?host(t.url):"New tab";render()}
 function render(){
@@ -242,15 +248,24 @@ function favList(){open(`<h3 style="margin-top:0">Favourites</h3>${favs.length?f
 $("#file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1400/im.width),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.s("bg",c.toDataURL("image/jpeg",.75));applyBg();toast("Background set")};im.src=r.result};r.readAsDataURL(f)};
 const INS={med:"You are a careful medical information assistant inside a browser app. The user asks about medicines: what a medicine is for, how it is usually taken (with or without food, how often in general terms, how long), who it is for and who should avoid it, common side effects, warnings and interactions. Reply in the same language and script as the user (English, Urdu, or Roman Urdu), in short clear points. Do not give exact numeric doses for children or infants from memory: tell the user to follow the product label or ask a doctor or pharmacist. Always end by advising them to confirm with a doctor or pharmacist before use, and for emergencies to go to a hospital or call local emergency services.",gen:"You are Tasla AI, a helpful, friendly assistant inside a browser app. Answer any question clearly and concisely in the same language and script as the user (English, Urdu, or Roman Urdu)."};
 function ai(m){mode=m;
- open(`<div class="ai"><div class="tb"><button data-a="med" class="${m=="med"?"on":""}">${ic("med")}Medical AI</button><button data-a="gen" class="${m=="gen"?"on":""}">${ic("spark")}AI Chat</button></div><div id="msgs"></div><div class="row"><input id="q" placeholder="${m=="med"?"Ask about a medicine...":"Ask me anything..."}"><button class="ok" id="snd">${ic("send")}</button></div></div>`);
+ open(`<div class="ai"><div class="tb"><button data-a="med" class="${m=="med"?"on":""}">${ic("med")}Medical AI</button><button data-a="gen" class="${m=="gen"?"on":""}">${ic("spark")}AI Chat</button><button class="ok" id="akb" title="Gemini API Key" style="margin-left:auto;padding:6px 10px;font-size:11px;background:var(--card);color:inherit;box-shadow:none">${ic("lock")} API Key</button></div><div id="msgs"></div><div class="row"><input id="q" placeholder="${m=="med"?"Ask about a medicine...":"Ask me anything..."}"><button class="ok" id="snd">${ic("send")}</button></div></div>`);
  const M=$("#msgs");const bub=(c,t)=>{const d=document.createElement("div");d.className="m "+c;d.textContent=t;M.append(d);M.scrollTop=M.scrollHeight;return d};
  bub("",m=="med"?"Hello! Ask me about any medicine: what it is for, how to take it, and who should or should not use it. I give general information only, not a diagnosis.":"Hello! I am Tasla AI. Ask me anything.");
  chats[m].forEach(x=>bub(x.role=="user"?"u":"",x.content));
  const send=async()=>{const q=$("#q").value.trim();if(!q)return;$("#q").value="";chats[m].push({role:"user",content:q});bub("u",q);const d=bub("","Thinking...");
-  try{const sm=window.claude&&await claude.use("sample");if(!sm){d.textContent="AI is not available in this view.";return}
-   const msgs=chats[m].map((x,i)=>i==0?{role:x.role,content:INS[m]+"\n\nUser: "+x.content}:x);
-   const r=await sm(msgs,{cache:false,onText:o=>{d.textContent=o.text;M.scrollTop=M.scrollHeight}});
-   d.textContent=r.text;chats[m].push({role:"assistant",content:r.text})}
-  catch(e){chats[m].pop();d.textContent=e&&e.code=="not_granted"?"Permission was not given for AI.":"AI is busy or unavailable. Try again shortly."}};
- $("#snd").onclick=send;$("#q").onkeydown=e=>{if(e.key=="Enter")send()}}
+  try{
+   if(window.claude){const sm=await claude.use("sample");if(sm){const msgs=chats[m].map((x,i)=>i==0?{role:x.role,content:INS[m]+"\n\nUser: "+x.content}:x);const r=await sm(msgs,{cache:false,onText:o=>{d.textContent=o.text;M.scrollTop=M.scrollHeight}});d.textContent=r.text;chats[m].push({role:"assistant",content:r.text});return}}
+   const gk=S.g("gemini_key","");
+   if(gk){
+    const contents=chats[m].map(x=>({role:x.role=="assistant"?"model":"user",parts:[{text:x.content}]}));
+    contents[0].parts[0].text=INS[m]+"\n\n"+contents[0].parts[0].text;
+    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+encodeURIComponent(gk),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents})});
+    const data=await res.json();
+    if(data.candidates&&data.candidates[0].content){const reply=data.candidates[0].content.parts[0].text;d.textContent=reply;chats[m].push({role:"assistant",content:reply});return}else{throw 0}
+   }
+   d.innerHTML=`AI Chat requires a Gemini API key when hosted outside Claude.<br><button class="ok" id="set-ai-key" style="margin-top:8px;padding:6px 12px;font-size:12px;">Add Gemini API Key</button>`;
+   $("#set-ai-key").onclick=openKeyModal;
+  }catch(e){chats[m].pop();d.textContent="AI error or missing API key. Click 'API Key' above to configure."}};
+ const openKeyModal=()=>{open(`<h3 style="margin-top:0">Gemini API Key</h3><p style="font-size:13px;opacity:.8;line-height:1.5">Get a free key from Google AI Studio (aistudio.google.com) and paste it here.</p><div class="row"><input class="pin" id="gkey" placeholder="Paste Gemini API key" value="${esc(S.g("gemini_key",""))}"><button class="ok" id="gsa">Save</button></div>`);$("#gsa").onclick=()=>{S.s("gemini_key",$("#gkey").value.trim());shut();toast("Saved!");ai(m)}};
+ $("#akb").onclick=openKeyModal;$("#snd").onclick=send;$("#q").onkeydown=e=>{if(e.key=="Enter")send()}}
 </script></body></html>
